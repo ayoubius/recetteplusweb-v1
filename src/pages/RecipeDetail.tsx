@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { useSupabaseRecipes } from '@/hooks/useSupabaseRecipes';
 import { useSupabaseProducts } from '@/hooks/useSupabaseProducts';
-import { useAddToCart } from '@/hooks/useAddToCart';
+import { useRecipeUserCarts } from '@/hooks/useSupabaseCart';
 import { formatCFA } from '@/lib/currency';
 import { useToast } from '@/hooks/use-toast';
 
@@ -26,7 +26,7 @@ const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data: recipes = [], isLoading: recipeLoading } = useSupabaseRecipes();
   const { data: products = [] } = useSupabaseProducts();
-  const { addToCart, isAdding } = useAddToCart();
+  const { createRecipeCart, isCreating } = useRecipeUserCarts();
   const { toast } = useToast();
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
@@ -82,24 +82,39 @@ const RecipeDetail = () => {
 
   const handleAddIngredientToCart = async (productId: string) => {
     try {
-      await addToCart(productId, 1);
+      // Cette fonction pourrait être améliorée pour ajouter individuellement
       setSelectedIngredients(prev => [...prev, productId]);
+      toast({
+        title: "Ingrédient sélectionné",
+        description: "Utilisez 'Créer panier recette' pour ajouter tous les ingrédients."
+      });
     } catch (error) {
       console.error('Erreur:', error);
     }
   };
 
-  const handleAddAllIngredientsToCart = async () => {
+  const handleCreateRecipeCart = async () => {
     try {
-      for (const product of recipeProducts) {
-        if (product && !selectedIngredients.includes(product.id)) {
-          await addToCart(product.id, 1);
-        }
+      const ingredients = recipeProducts
+        .filter(product => product)
+        .map(product => ({
+          productId: product!.id,
+          quantity: 1 // Pourrait être basé sur recipeQuantity
+        }));
+
+      if (ingredients.length === 0) {
+        toast({
+          title: "Aucun ingrédient",
+          description: "Cette recette n'a pas d'ingrédients disponibles.",
+          variant: "destructive"
+        });
+        return;
       }
-      setSelectedIngredients(recipeProducts.map(p => p?.id).filter(Boolean) as string[]);
-      toast({
-        title: "Tous les ingrédients ajoutés",
-        description: "Tous les ingrédients disponibles ont été ajoutés à votre panier."
+
+      createRecipeCart({
+        recipeId: recipe.id,
+        cartName: `Panier - ${recipe.title}`,
+        ingredients
       });
     } catch (error) {
       console.error('Erreur:', error);
@@ -206,12 +221,12 @@ const RecipeDetail = () => {
                   {recipeProducts.length > 0 && (
                     <Button
                       size="sm"
-                      onClick={handleAddAllIngredientsToCart}
-                      disabled={isAdding}
+                      onClick={handleCreateRecipeCart}
+                      disabled={isCreating}
                       className="bg-orange-500 hover:bg-orange-600"
                     >
                       <ShoppingCart className="h-4 w-4 mr-1" />
-                      Tout ajouter
+                      Créer panier recette
                     </Button>
                   )}
                 </CardTitle>
@@ -241,15 +256,15 @@ const RecipeDetail = () => {
                         <Button
                           size="sm"
                           onClick={() => handleAddIngredientToCart(product.id)}
-                          disabled={isAdding || isSelected}
+                          disabled={isCreating || isSelected}
                           className={`w-full ${isSelected ? 'bg-green-500 hover:bg-green-600' : 'bg-orange-500 hover:bg-orange-600'}`}
                         >
                           {isSelected ? (
-                            <>✓ Ajouté</>
+                            <>✓ Sélectionné</>
                           ) : (
                             <>
                               <Plus className="h-4 w-4 mr-1" />
-                              Ajouter
+                              Sélectionner
                             </>
                           )}
                         </Button>

@@ -241,8 +241,7 @@ const DeliveryDashboard = () => {
                     </CardContent>
                   </Card>
                 );
-              })
-            )}
+              })}
             </div>
           )}
         </div>

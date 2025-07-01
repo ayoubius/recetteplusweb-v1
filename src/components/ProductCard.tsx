@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Star } from 'lucide-react';
-import { formatPrice } from '@/lib/firestore';
+import { formatCFA } from '@/lib/currency';
 import { usePersonalCart } from '@/hooks/useSupabaseCart';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -104,15 +104,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {promotion ? (
               <>
                 <span className="text-lg font-bold text-orange-500">
-                  {formatPrice(price)}
+                  {formatCFA(price)}
                 </span>
                 <span className="text-sm text-gray-500 line-through">
-                  {formatPrice(promotion.originalPrice)}
+                  {formatCFA(promotion.originalPrice)}
                 </span>
               </>
             ) : (
               <span className="text-lg font-bold text-orange-500">
-                {formatPrice(price)}
+                {formatCFA(price)}
               </span>
             )}
           </div>

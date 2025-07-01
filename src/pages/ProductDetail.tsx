@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ShoppingCart, Heart, Star, Package, Truck } from 'lucide-react';
+import { formatCFA } from '@/lib/currency';
+import { usePersonalCart } from '@/hooks/useSupabaseCart';
+import { useAuth } from '@/contexts/SupabaseAuthContext';
 import Header from '@/components/Header';
 import FavoriteButton from '@/components/FavoriteButton';
 
@@ -13,6 +16,8 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: products = [] } = useSupabaseProducts();
+  const { addToPersonalCart, isAdding } = usePersonalCart();
+  const { currentUser } = useAuth();
   
   const product = products.find(p => p.id === id);
 
@@ -104,14 +109,14 @@ const ProductDetail = () => {
                 <div className="mb-8">
                   <div className="flex items-baseline space-x-2">
                     <span className="text-4xl font-bold text-orange-600">
-                      {product.price.toLocaleString()} FCFA
+                      {formatCFA(product.price)}
                     </span>
                     <span className="text-lg text-gray-500">/ {product.unit}</span>
                   </div>
                   {product.promotion && (
                     <div className="mt-2">
                       <span className="text-lg text-gray-500 line-through mr-2">
-                        {product.promotion.originalPrice} FCFA
+                        {formatCFA(product.promotion.originalPrice)}
                       </span>
                       <Badge variant="destructive">
                         -{product.promotion.discount}%
@@ -125,10 +130,21 @@ const ProductDetail = () => {
                   <Button 
                     size="lg" 
                     className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-4 text-lg font-semibold"
-                    disabled={!product.in_stock}
+                    disabled={!product.in_stock || isAdding}
+                    onClick={() => {
+                      if (!currentUser) {
+                        navigate('/login');
+                        return;
+                      }
+                      addToPersonalCart({ productId: product.id, quantity: 1 });
+                    }}
                   >
-                    <ShoppingCart className="h-5 w-5 mr-2" />
-                    Ajouter au panier
+                    {isAdding ? (
+                      <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2" />
+                    ) : (
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                    )}
+                    {isAdding ? 'Ajout en cours...' : 'Ajouter au panier'}
                   </Button>
                 </div>
               </div>
