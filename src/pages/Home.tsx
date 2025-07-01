@@ -9,7 +9,7 @@ import Header from '@/components/Header';
 const Home = () => {
   return (
     <>
-      <Header />
+     
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50">
         {/* Hero Section */}
         <section className="relative py-12 md:py-24 px-4 overflow-hidden">
