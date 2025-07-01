@@ -51,7 +51,7 @@ const About = () => {
 
   return (
     <>
-      <Header />
+
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100">
         {/* Hero Section */}
         <div className="text-center mb-16 animate-fade-in">

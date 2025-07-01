@@ -78,7 +78,7 @@ const Favorites = () => {
   if (!currentUser) {
     return (
       <>
-        <Header />
+   
         <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 flex items-center justify-center">
           <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur-sm">
             <CardHeader className="text-center">

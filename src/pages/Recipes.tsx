@@ -82,7 +82,7 @@ const Recipes = () => {
   if (isLoading) {
     return (
       <>
-        <Header />
+   
         <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 flex items-center justify-center">
           <div className="text-center">
             <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-orange-500" />
