@@ -67,7 +67,7 @@ const Videos = () => {
   if (error) {
     return (
       <>
-        <Header />
+        
         <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 flex items-center justify-center">
           <div className="text-center">
             <p className="text-red-600 mb-4">Erreur lors du chargement des vidéos</p>
