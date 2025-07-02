@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -37,9 +38,11 @@ const Cart = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
-              Se connecter
-            </Button>
+            <Link to="/login">
+              <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
+                Se connecter
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -104,9 +107,11 @@ const Cart = () => {
               <CardTitle className="text-lg">Continuer les achats</CardTitle>
             </CardHeader>
             <CardContent>
-              <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
-                Voir les produits
-              </Button>
+              <Link to="/produits">
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
+                  Voir les produits
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -116,9 +121,11 @@ const Cart = () => {
               <CardTitle className="text-lg">Paniers préconfigurés</CardTitle>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full hover:bg-green-50 border-green-200">
-                Découvrir
-              </Button>
+              <Link to="/paniers-preconfigures">
+                <Button variant="outline" className="w-full hover:bg-green-50 border-green-200">
+                  Découvrir
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -140,9 +147,11 @@ const Cart = () => {
               <CardTitle className="text-lg">Suivi commandes</CardTitle>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full hover:bg-purple-50 border-purple-200">
-                Voir l'historique
-              </Button>
+              <Link to="/profile">
+                <Button variant="outline" className="w-full hover:bg-purple-50 border-purple-200">
+                  Voir l'historique
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

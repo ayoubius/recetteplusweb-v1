@@ -6,13 +6,19 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Heart, Clock, ArrowLeft } from 'lucide-react';
 import { useSupabaseVideos } from '@/hooks/useSupabaseVideos';
+import { useSupabaseRecipes } from '@/hooks/useSupabaseRecipes';
 import VideoPlayer from '@/components/VideoPlayer';
+import { useSupabaseFavorites } from '@/hooks/useSupabaseFavorites';
 
 const VideoDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data: videos = [], isLoading } = useSupabaseVideos();
+  const { data: recipes = [] } = useSupabaseRecipes();
+  const { addFavorite, removeFavorite, data: favorites = [] } = useSupabaseFavorites();
   
   const video = videos.find(v => v.id === id);
+  const relatedRecipe = video?.recipe_id ? recipes.find(r => r.id === video.recipe_id) : null;
+  const isVideoFavorite = video ? favorites.some(fav => fav.item_id === video.id && fav.type === 'video') : false;
 
   if (isLoading) {
     return (
@@ -135,15 +141,18 @@ const VideoDetail = () => {
             <Card>
               <CardContent className="p-4">
                 <div className="space-y-3">
-                  <Button className="w-full bg-orange-500 hover:bg-orange-600">
-                    <Heart className="h-4 w-4 mr-2" />
-                    J'aime cette vidéo
+                  <Button 
+                    className={`w-full ${isVideoFavorite ? 'bg-red-500 hover:bg-red-600' : 'bg-orange-500 hover:bg-orange-600'}`}
+                    onClick={() => isVideoFavorite ? removeFavorite({itemId: video.id, type: 'video'}) : addFavorite({itemId: video.id, type: 'video'})}
+                  >
+                    <Heart className={`h-4 w-4 mr-2 ${isVideoFavorite ? 'fill-current' : ''}`} />
+                    {isVideoFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
                   </Button>
                   
-                  {video.recipe_id && (
-                    <Link to={`/recettes/${video.recipe_id}`}>
+                  {relatedRecipe && (
+                    <Link to={`/recettes/${relatedRecipe.id}`}>
                       <Button variant="outline" className="w-full">
-                        Voir la recette
+                        Voir la recette: {relatedRecipe.title}
                       </Button>
                     </Link>
                   )}

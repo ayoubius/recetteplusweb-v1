@@ -22,6 +22,7 @@ import About from '@/pages/About';
 import PreconfiguredCarts from '@/pages/PreconfiguredCarts';
 import PreconfiguredCartDetail from '@/pages/PreconfiguredCartDetail';
 import Favorites from '@/pages/Favorites';
+import OrderHistory from '@/pages/OrderHistory';
 import NotFound from '@/pages/NotFound';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import UserManagement from '@/pages/admin/UserManagement';
@@ -59,6 +60,7 @@ function App() {
                 <Route path="/paniers-preconfigures" element={<PreconfiguredCarts />} />
                 <Route path="/paniers-preconfigures/:id" element={<PreconfiguredCartDetail />} />
                 <Route path="/favoris" element={<Favorites />} />
+                <Route path="/commandes" element={<OrderHistory />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

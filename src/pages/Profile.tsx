@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { User, Settings, MapPin, Heart, ShoppingBag, Upload, Camera } from 'lucide-react';
+import { User, Settings, MapPin, Heart, ShoppingBag, Upload, Camera, Package, Eye } from 'lucide-react';
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -111,10 +111,14 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Profil</span>
+            </TabsTrigger>
+            <TabsTrigger value="orders" className="flex items-center gap-2">
+              <ShoppingBag className="h-4 w-4" />
+              <span className="hidden sm:inline">Commandes</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -237,6 +241,34 @@ const Profile = () => {
                 >
                   {loading ? 'Mise à jour...' : 'Sauvegarder les modifications'}
                 </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="orders">
+            <Card>
+              <CardHeader>
+                <CardTitle>Mes commandes récentes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="text-center py-8 text-gray-500">
+                    <ShoppingBag className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p>Aucune commande récente</p>
+                    <p className="text-sm">Vos dernières commandes apparaîtront ici</p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button className="flex-1 bg-orange-500 hover:bg-orange-600">
+                      <Package className="h-4 w-4 mr-2" />
+                      Faire une commande
+                    </Button>
+                    <Button variant="outline" className="flex-1">
+                      <Eye className="h-4 w-4 mr-2" />
+                      Voir toutes les commandes
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

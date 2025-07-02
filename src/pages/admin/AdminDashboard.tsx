@@ -117,44 +117,46 @@ const AdminDashboard = () => {
   const estimatedRevenue = products?.reduce((acc, product) => acc + (product.price || 0), 0) || 0;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tableau de bord</h1>
-          <p className="text-gray-600 mt-1">Vue d'ensemble de votre plateforme Recette+</p>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">Tableau de bord</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">Vue d'ensemble de votre plateforme Recette+</p>
         </div>
-        <div className="flex space-x-2">
-          <Button variant="outline">
+        <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2">
+          <Button variant="outline" className="text-xs sm:text-sm">
             <TrendingUp className="h-4 w-4 mr-2" />
-            Rapports
+            <span className="hidden sm:inline">Rapports</span>
+            <span className="sm:hidden">Stats</span>
           </Button>
-          <Button className="bg-orange-500 hover:bg-orange-600">
+          <Button className="bg-orange-500 hover:bg-orange-600 text-xs sm:text-sm">
             <Plus className="h-4 w-4 mr-2" />
-            Actions rapides
+            <span className="hidden sm:inline">Actions rapides</span>
+            <span className="sm:hidden">Actions</span>
           </Button>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Grid - Fully Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
             <Card key={stat.title} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-4 lg:p-6">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                    <p className={`text-xs mt-1 ${
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">{stat.title}</p>
+                    <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                    <p className={`text-xs mt-1 truncate ${
                       stat.changeType === 'positive' ? 'text-green-600' :
                       stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
                     }`}>
                       {stat.change}
                     </p>
                   </div>
-                  <div className={`p-3 rounded-full ${stat.bgColor}`}>
-                    <Icon className={`h-6 w-6 ${stat.color}`} />
+                  <div className={`p-2 sm:p-3 rounded-full ${stat.bgColor} flex-shrink-0`}>
+                    <Icon className={`h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -168,15 +170,15 @@ const AdminDashboard = () => {
         <CardHeader>
           <CardTitle>Actions rapides</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <CardContent className="p-3 sm:p-4 lg:p-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
             {quickActions.map((action) => {
               const Icon = action.icon;
               return (
                 <Link key={action.title} to={action.link}>
-                  <div className="p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                    <Icon className="h-8 w-8 text-orange-500 mb-2" />
-                    <p className="text-sm font-medium">{action.title}</p>
+                  <div className="p-2 sm:p-3 lg:p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-orange-500 mb-1 sm:mb-2" />
+                    <p className="text-xs sm:text-sm font-medium leading-tight">{action.title}</p>
                   </div>
                 </Link>
               );
@@ -185,8 +187,8 @@ const AdminDashboard = () => {
         </CardContent>
       </Card>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Main Content Grid - Mobile First */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Recent Activity */}
         <Card>
           <CardHeader>
@@ -264,8 +266,8 @@ const AdminDashboard = () => {
         </Card>
       </div>
 
-      {/* Content Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Content Overview - Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Recettes populaires</CardTitle>
